@@ -1,4 +1,5 @@
 let currentAudio = null; 
+let timeoutId=null;
 function playMusic(audioId) {
     if (currentAudio) {
         currentAudio.pause(); 
@@ -9,7 +10,20 @@ function playMusic(audioId) {
     if (currentAudio) {
         currentAudio.play().catch(err => console.error("Playback failed:", err));
     }
+
+if (timeoutId) {
+    clearTimeout(timeoutId);
 }
+timeoutId = setTimeout(() => {
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio = null;
+    }
+}, 2000);
+}
+
+
 
 document.getElementById('btn1').addEventListener("click", () => playMusic('music1'));
 document.getElementById('btn2').addEventListener("click", () => playMusic('music2'));
